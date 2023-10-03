@@ -46,3 +46,31 @@ icons{
     border-radius: 10px;
 }
 
+.image{
+    height: 140px;
+    width: 100%;
+}
+
+.imgClass{
+    height: 140px;
+    width: 100%;
+}
+
+.weather{
+    margin: 5px;
+   /*  background-color: rgb(106, 215, 255); */
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.minValues{
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
+    height: 25px;
+    width: 85px;
+    margin: 0;
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
