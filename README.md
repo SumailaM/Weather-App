@@ -25,6 +25,7 @@ Enhance your weather exploration experience with the Weather Dashboard, providin
 
 
 https://sumailam.github.io/Weather-App/
+
 https://github.com/SumailaM/Weather-App
 <img width="1710" alt="Screenshot 2024-02-05 at 10 33 47 AM" src="https://github.com/SumailaM/Weather-App/assets/142268062/edb88f37-5b22-4700-9fad-716ce126a910">
 
