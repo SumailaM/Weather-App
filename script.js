@@ -1,98 +1,90 @@
-function GetInfo() {
+const apiKey = '66402fd56735df21c096dd5c5a670331';
 
-    var newName = document.getElementById("cityInput");
-    var cityName = document.getElementById("cityName");
-    cityName.innerHTML = "--"+newName.value+"--";
+// Add event listener to the search form
+document.getElementById('searchForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+    const city = document.getElementById('cityInput').value; // Get the city from the input
+    fetchWeatherData(city); // Call the function to fetch weather data
+});
 
-fetch('https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}'+newName.value+'&appid=32ba0bfed592484379e51106cef3f204')
-.then(response => response.json())
-.then(data => {
-        //Getting the min aand max values for each day
-        for(i = 0; i<5; i++){
-            document.getElementById("day" + (i+1) + "Min").innerHTML = "Min: " + Number(data.list[i].main.temp_min - 273.15).toFixed(1)+ "°";
-            //Number(1.3450001).toFixed(2); // 1.35
-        }
-    
-        for(i = 0; i<5; i++){
-            document.getElementById("day" + (i+1) + "Max").innerHTML = "Max: " + Number(data.list[i].main.temp_max - 273.15).toFixed(2) + "°";
-        }
-       --
-    
-        
-    
-    })
+// Function to fetch weather data from the OpenWeatherMap API
+function fetchWeatherData(city) {
+    //  The API URL with the city name
+    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
 
-    .catch(err => alert("Something Went Wrong: Try Checking Your Internet Coneciton"))
+    // Fetch data from the API
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            // Get the information for current weather
+            const currentWeatherData = {
+                cityName: data.city.name,
+                date: new Date().toLocaleDateString(),
+                icon: `http://openweathermap.org/img/w/${data.list[0].weather[0].icon}.png`,
+                temperature: `${Math.round(data.list[0].main.temp - 273.15)}°C`,
+                humidity: `${data.list[0].main.humidity}%`,
+                windSpeed: `${data.list[0].wind.speed} m/s`
+            };
+
+            // Used to get information for 5-day forecast
+            const forecastData = data.list.slice(1, 6).map(item => ({
+                date: new Date(item.dt * 1000).toLocaleDateString(),
+                icon: `http://openweathermap.org/img/w/${item.weather[0].icon}.png`,
+                temperature: `${Math.round(item.main.temp - 273.15)}°C`,
+                humidity: `${item.main.humidity}%`,
+                windSpeed: `${item.wind.speed} m/s`
+            }));
+
+            // Update the UI with current weather and forecast data
+            updateCurrentWeather(currentWeatherData);
+            updateForecast(forecastData);
+            updateSearchHistory(city);
+        })
+        .catch(error => {
+            console.error('Error fetching weather data:', error);
+            alert('Error fetching weather data. Please try again.');
+        });
 }
 
-function DefaultScreen(){
-    document.getElementById("cityInput").defaultValue = "London";
-    GetInfo();
+// Used a function to update the current weather section of the UI
+function updateCurrentWeather(data) {
+    const currentWeatherElement = document.getElementById('currentWeather');
+    currentWeatherElement.innerHTML = `
+        <h2>${data.cityName} - ${data.date}</h2>
+        <img src="${data.icon}" alt="Weather Icon">
+        <p>Temperature: ${data.temperature}</p>
+        <p>Humidity: ${data.humidity}</p>
+        <p>Wind Speed: ${data.windSpeed}</p>
+    `;
 }
 
-//  this is to gte and display days
-var d = new Date();
-var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",];
-
-function CheckDay(day){
-    if(day + d.getDay() > 6){
-        return day + d.getDay() - 7;
-    }
-    else{
-        return day + d.getDay();
-    }
+// Function to update the 5-day forecast section of the UI
+function updateForecast(data) {
+    const forecastElement = document.getElementById('forecast');
+    forecastElement.innerHTML = '<h2>5-Day Forecast</h2>';
+    data.forEach(day => {
+        forecastElement.innerHTML += `
+            <div class="forecast-day">
+                <p>Date: ${day.date}</p>
+                <img src="${day.icon}" alt="Weather Icon">
+                <p>Temperature: ${day.temperature}</p>
+                <p>Humidity: ${day.humidity}</p>
+                <p>Wind Speed: ${day.windSpeed}</p>
+            </div>
+        `;
+    });
 }
 
-    for(i = 0; i<5; i++){
-        document.getElementById("day" + (i+1)).innerHTML = weekday[CheckDay(i)];
+// Function to update the search history section of the UI
+function updateSearchHistory(city) {
+    const searchHistoryElement = document.getElementById('searchHistory');
+    searchHistoryElement.innerHTML += `<p>${city}</p>`;
+}
+
+// Added a  event listener to the search history for handling city selection
+document.getElementById('searchHistory').addEventListener('click', function(event) {
+    if (event.target.tagName === 'P') {
+        const selectedCity = event.target.textContent;
+        fetchWeatherData(selectedCity);
     }
- 
-     //------------------------------------------------------------
-
-
- //------------------------------------------------------------
-
-
-
-document.getElementById("day1Min").innerHTML = Math.round(data.list[0].main.temp_min - 273.15, -2);
-document.getElementById("day2Min").innerHTML = Math.round(data.list[1].main.temp_min - 273.15, -2);
-document.getElementById("day3Min").innerHTML = Math.round(data.list[2].main.temp_min - 273.15, -2);
-document.getElementById("day4Min").innerHTML = Math.round(data.list[3].main.temp_min - 273.15, -2);
-document.getElementById("day5Min").innerHTML = Math.round(data.list[4].main.temp_min - 273.15, -2);*/
-
-*document.getElementById("day1Max").innerHTML ; Math.round(data.list[0].main.temp_max - 273.15, -2);
-document.getElementById("day2Max").innerHTML = Math.round(data.list[0].main.temp_max - 273.15, -2);
-document.getElementById("day3Max").innerHTML = Math.round(data.list[0].main.temp_max - 273.15, -2);
-document.getElementById("day4Max").innerHTML = Math.round(data.list[0].main.temp_max - 273.15, -2);
-document.getElementById("day5Max").innerHTML = Math.round(data.list[0].main.temp_max - 273.15, -2);*/
-
-*document.getElementById("img1").src ; "http://openweathermap.org/img/w/"+
-data.list[0].weather[0].icon
-+".png";
-document.getElementById("img2").src = "http://openweathermap.org/img/w/"+
-data.list[1].weather[0].icon
-+".png";
-document.getElementById("img3").src = "http://openweathermap.org/img/w/"+
-data.list[2].weather[0].icon
-+".png";
-document.getElementById("img4").src = "http://openweathermap.org/img/w/"+
-data.list[3].weather[0].icon
-+".png";
-document.getElementById("img5").src = "http://openweathermap.org/img/w/"+
-data.list[4].weather[0].icon
-+".png";
-
-
-document.getElementById("day1").innerHTML ; weekday[CheckDay(0)];
-document.getElementById("day2").innerHTML = weekday[CheckDay(1)];
-document.getElementById("day3").innerHTML = weekday[CheckDay(2)];
-document.getElementById("day4").innerHTML = weekday[CheckDay(3)];
-document.getElementById("day5").innerHTML = weekday[CheckDay(4)];
-
-weekday[0]; "Sunday";
-weekday[1] = "Monday";
-weekday[2] = "Tuesday";
-weekday[3] = "Wednesday";
-weekday[4] = "Thursday";
-weekday[5] = "Friday";
-weekday[6] = "Saturday";
+});

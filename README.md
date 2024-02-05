@@ -1,11 +1,24 @@
 # Weather-App
- 
-GIVEN a weather dashboard with form inputs
-WHEN I search for a city
-THEN I am presented with current and future conditions for that city and that city is added to the search history
-WHEN I view current weather conditions for that city
-THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, and the the wind speed
-WHEN I view future weather conditions for that city
-THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity
-WHEN I click on a city in the search history
-THEN I am again presented with current and future conditions for that city
+ -Weather Dashboard with Form Inputs
+The Weather Dashboard is an interactive web application that provides users with real-time weather information for a specified city. It offers a seamless experience with the following functionalities:
+
+-Searching for a City
+    Input Form: A user-friendly form allows you to enter the name of the city you want to explore.
+
+    Search Action: Upon submitting the form, the application fetches and displays both current and future weather conditions for the specified city.
+
+-Viewing Current Weather Conditions
+    City Overview: The application presents a clear overview of the selected city, including the name and the current date.
+
+    Weather Icon: An easily recognizable icon visually represents the current weather conditions.
+
+    Detailed Information: Users are provided with essential details such as temperature, humidity, and wind speed for the current moment.
+
+-Viewing Future Weather Conditions
+    5-Day Forecast: The application offers a comprehensive 5-day forecast that includes the date, weather icon, temperature, wind speed, and humidity for each day.
+-Search History
+    Track Search History: Every city you search for is added to the search history, making it convenient to revisit or compare weather conditions for different locations.
+
+    Quick Access: Clicking on a city in the search history instantly retrieves and displays both current and future weather conditions for that city.
+
+Enhance your weather exploration experience with the Weather Dashboard, providing you with current conditions, forecasts, and a quick search history overview. Stay informed and plan ahead with ease!
